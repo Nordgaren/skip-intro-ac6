@@ -35,20 +35,20 @@ pub extern "stdcall" fn DllMain(hinstDLL: isize, dwReason: u32, lpReserved: *mut
     }
 }
 
+const SKIP_OFFSET: isize = 0x9;
 unsafe fn init_hooks() {
-    // let base = GetModuleHandleA(None).unwrap().0 as usize;
-    // let module_slice = get_module_slice(base);
-    // let signature = Signature::from_ida_pattern("");
-    // let offset = SimpleScanner
-    //     .scan(module_slice, &signature)
-    //     .expect("Could not find signature.");
-
-    //let callsite = base as isize + offset as isize;
-    let lol = 0x14124eac5 as *mut u16;
+    let base = GetModuleHandleA(None).unwrap().0 as usize;
+    let module_slice = get_module_slice(base);
+     let signature = Signature::from_ida_pattern("33 FF 40 38 BE ?? ?? ?? ?? 74").unwrap();
+    let offset = SimpleScanner
+         .scan(module_slice, &signature)
+         .expect("Could not find signature.");
+    let jump_addr = base as isize + offset as isize + SKIP_OFFSET;
+    let jump_bytes = jump_addr as *mut u16;
     let mut oldProtect = PAGE_PROTECTION_FLAGS(0);
-    VirtualProtect(lol as *const c_void, 0x2, PAGE_EXECUTE_READWRITE, &mut oldProtect);
-    *lol = 0x9090;
-    VirtualProtect(lol as *const c_void, 0x2, oldProtect, &mut oldProtect);
+    VirtualProtect(jump_bytes as *const c_void, 0x2, PAGE_EXECUTE_READWRITE, &mut oldProtect);
+    *jump_bytes = 0x9090;
+    VirtualProtect(jump_bytes as *const c_void, 0x2, oldProtect, &mut oldProtect);
 
 }
 
