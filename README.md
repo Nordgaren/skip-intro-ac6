@@ -2,7 +2,7 @@
 Skips the intro/title screens for Armored Core 6
 
 
-Can load as dinput8.dll, but please use [Elden Mod Loader﻿](https://www.nexusmods.com/eldenring/mods/117)
+Can load as dinput8.dll, but please use [Elden Mod Loader﻿](https://www.nexusmods.com/eldenring/mods/117) or [Lazy Loader](https://www.nexusmods.com/darksouls3/mods/677)
 
 # Updates
 ## 1.1
